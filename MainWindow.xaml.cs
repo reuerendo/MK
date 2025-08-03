@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using WinRT.Interop;
 using Microsoft.UI.Windowing;
 using Windows.Graphics;
+using Microsoft.UI.Win32Interop;
 
 namespace MiniKeyboard
 {
