@@ -139,7 +139,7 @@ namespace MiniKeyboard
             }
             
             // Release all keys up (in reverse order)
-            foreach (var key in keys.Reverse())
+            foreach (var key in keys.AsEnumerable().Reverse())
             {
                 SendKeyUpInternal(key);
             }
@@ -157,7 +157,7 @@ namespace MiniKeyboard
         public void SendKeyUpOnly(string keyCombination)
         {
             var keys = ParseKeyCombination(keyCombination);
-            foreach (var key in keys.Reverse())
+            foreach (var key in keys.AsEnumerable().Reverse())
             {
                 SendKeyUpInternal(key);
             }

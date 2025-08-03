@@ -14,7 +14,6 @@ namespace MiniKeyboard
     {
         private KeyboardHook _keyboardHook;
         private ObservableCollection<KeyButtonModel> _buttons;
-        private bool _isLocked = false;
 
         public MainWindow()
         {
@@ -71,14 +70,14 @@ namespace MiniKeyboard
 
         private void LoadStyles()
         {
-            // Define custom button style
+            // Define custom button style in code-behind
             var keyButtonStyle = new Style(typeof(Button));
             keyButtonStyle.Setters.Add(new Setter(Button.MinWidthProperty, 45));
             keyButtonStyle.Setters.Add(new Setter(Button.MinHeightProperty, 35));
             keyButtonStyle.Setters.Add(new Setter(Button.FontSizeProperty, 10));
             keyButtonStyle.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(4)));
             
-            this.Resources["KeyButtonStyle"] = keyButtonStyle;
+            ((FrameworkElement)this.Content).Resources["KeyButtonStyle"] = keyButtonStyle;
         }
 
         private void KeyButton_Click(object sender, RoutedEventArgs e)
