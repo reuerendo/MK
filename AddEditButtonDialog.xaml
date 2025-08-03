@@ -1,0 +1,47 @@
+<ContentDialog x:Class="MiniKeyboard.AddEditButtonDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               Title="Add/Edit Button"
+               PrimaryButtonText="Save"
+               SecondaryButtonText="Cancel"
+               DefaultButton="Primary">
+    
+    <StackPanel Spacing="15" MinWidth="300">
+        <TextBox x:Name="DisplayTextBox" 
+                 Header="Display Text"
+                 PlaceholderText="Enter button text"/>
+        
+        <TextBox x:Name="KeyCombinationBox" 
+                 Header="Key Combination"
+                 PlaceholderText="e.g., LControlKey+A"/>
+        
+        <ComboBox x:Name="IconComboBox" 
+                  Header="Icon" 
+                  PlaceholderText="Select icon">
+            <ComboBoxItem Content="🎮" Tag="🎮"/>
+            <ComboBoxItem Content="⌨" Tag="⌨"/>
+            <ComboBoxItem Content="⇧" Tag="⇧"/>
+            <ComboBoxItem Content="📝" Tag="📝"/>
+            <ComboBoxItem Content="📋" Tag="📋"/>
+            <ComboBoxItem Content="📄" Tag="📄"/>
+            <ComboBoxItem Content="⚡" Tag="⚡"/>
+            <ComboBoxItem Content="🔒" Tag="🔒"/>
+            <ComboBoxItem Content="🔑" Tag="🔑"/>
+            <ComboBoxItem Content="⭐" Tag="⭐"/>
+            <ComboBoxItem Content="🚀" Tag="🚀"/>
+            <ComboBoxItem Content="💾" Tag="💾"/>
+            <ComboBoxItem Content="🖥" Tag="🖥"/>
+            <ComboBoxItem Content="🔧" Tag="🔧"/>
+            <ComboBoxItem Content="⚙" Tag="⚙"/>
+        </ComboBox>
+        
+        <TextBlock Text="Key combination examples:" 
+                   FontSize="12" Foreground="Gray"/>
+        <TextBlock Text="• LControlKey+A (Ctrl+A)" 
+                   FontSize="10" Foreground="Gray"/>
+        <TextBlock Text="• LShiftKey+Delete" 
+                   FontSize="10" Foreground="Gray"/>
+        <TextBlock Text="• LControlKey+LShiftKey+N" 
+                   FontSize="10" Foreground="Gray"/>
+    </StackPanel>
+</ContentDialog>
