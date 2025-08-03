@@ -13,7 +13,7 @@ jobs:
     
     strategy:
       matrix:
-        platform: [x64, x86, ARM64]
+        platform: [x64, x86]
         configuration: [Release]
 
     steps:
