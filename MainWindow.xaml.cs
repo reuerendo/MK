@@ -29,7 +29,7 @@ namespace MiniKeyboard
         {
             // Get window handle for Win32 operations
             var windowHandle = WindowNative.GetWindowHandle(this);
-            var windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
             var appWindow = AppWindow.GetFromWindowId(windowId);
 
             // Set window properties for overlay behavior
