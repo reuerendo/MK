@@ -43,20 +43,30 @@ jobs:
 
     - name: Build MSIX package
       run: |
-        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never
+        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never /p:GenerateAppInstallerFile=false
 
-    - name: List generated files
+    - name: Debug - List all generated files
       run: |
-        Get-ChildItem -Recurse -Include "*.msix", "*.appx" | Select-Object FullName
-        Get-ChildItem -Path "." -Recurse -Directory -Name "*Package*"
+        Write-Host "=== All .msix and .appx files ==="
+        Get-ChildItem -Recurse -Include "*.msix", "*.appx" | ForEach-Object { Write-Host $_.FullName }
+        Write-Host ""
+        Write-Host "=== Directory structure ==="
+        Get-ChildItem -Path "." -Recurse -Directory | Where-Object { $_.Name -like "*Package*" -or $_.Name -like "*AppPackages*" } | ForEach-Object { Write-Host $_.FullName }
+        Write-Host ""
+        Write-Host "=== Bin directory structure ==="
+        if (Test-Path "bin") {
+          Get-ChildItem -Path "bin" -Recurse | ForEach-Object { Write-Host $_.FullName }
+        }
 
     - name: Upload MSIX artifacts
       uses: actions/upload-artifact@v4
       with:
         name: MiniKeyboard-${{ matrix.platform }}-MSIX
         path: |
-          bin/${{ matrix.configuration }}/net8.0-windows10.0.19041.0/win-${{ matrix.platform }}/AppPackages/**/*
-          publish/**/*
+          **/*.msix
+          **/*.appx
+          **/*.appxbundle
+        if-no-files-found: error
 
   release:
     needs: build
@@ -67,11 +77,17 @@ jobs:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
 
+    - name: List downloaded files
+      run: |
+        Write-Host "=== Downloaded artifacts ==="
+        Get-ChildItem -Recurse | ForEach-Object { Write-Host $_.FullName }
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
           **/*.msix
+          **/*.appx
           **/*.appxbundle
         draft: false
         prerelease: false
