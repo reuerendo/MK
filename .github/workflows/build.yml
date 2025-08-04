@@ -24,23 +24,23 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
-    - name: Setup MSBuild
+    - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.3
 
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+    - name: Build MSIX package
+      run: |
+        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:PackageCertificateKeyFile="" /p:PackageCertificatePassword="" /p:AppxPackageSigningEnabled=false
 
-    - name: Publish
-      run: dotnet publish --configuration ${{ matrix.configuration }} --runtime win-${{ matrix.platform }} --self-contained true --output ./publish/${{ matrix.platform }}
-
-    - name: Upload artifacts
+    - name: Upload MSIX artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: MiniKeyboard-${{ matrix.platform }}
-        path: ./publish/${{ matrix.platform }}
+        name: MiniKeyboard-${{ matrix.platform }}-MSIX
+        path: |
+          **/*.msix
+          **/*.appxbundle
 
   release:
     needs: build
@@ -55,9 +55,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          MiniKeyboard-x64/**
-          MiniKeyboard-x86/**  
-          MiniKeyboard-ARM64/**
+          **/*.msix
+          **/*.appxbundle
         draft: false
         prerelease: false
       env:
