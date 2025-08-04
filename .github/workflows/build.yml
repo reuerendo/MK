@@ -24,13 +24,19 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Setup Visual Studio Build Tools
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: x64
+
+    - name: Install Visual Studio components
+      run: |
+        choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Workload.UniversalBuildTools --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet"
+
     - name: Install .NET workloads
       run: |
         dotnet workload install microsoft-windows-sdk-projecttemplates
         dotnet workload install maui-windows
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.3
 
     - name: Restore dependencies
       run: dotnet restore
