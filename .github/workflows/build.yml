@@ -34,13 +34,18 @@ jobs:
       run: |
         msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:PackageCertificateKeyFile="" /p:PackageCertificatePassword="" /p:AppxPackageSigningEnabled=false
 
+    - name: List generated files
+      run: |
+        Get-ChildItem -Recurse -Include "*.msix", "*.appx", "*.appxbundle" | Select-Object FullName
+        Get-ChildItem -Path "." -Recurse -Directory -Name "*Package*"
+
     - name: Upload MSIX artifacts
       uses: actions/upload-artifact@v4
       with:
         name: MiniKeyboard-${{ matrix.platform }}-MSIX
         path: |
-          **/*.msix
-          **/*.appxbundle
+          bin/${{ matrix.platform }}/${{ matrix.configuration }}/AppPackages/**/*
+          AppPackages/**/*
 
   release:
     needs: build
