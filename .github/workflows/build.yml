@@ -31,7 +31,7 @@ jobs:
 
     - name: Install Visual Studio components
       run: |
-        choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Workload.UniversalBuildTools --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet"
+        choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Workload.UniversalBuildTools --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --add Microsoft.VisualStudio.ComponentGroup.UWP.BuildTools --quiet"
 
     - name: Install .NET workloads
       run: |
@@ -43,12 +43,12 @@ jobs:
 
     - name: Build MSIX package
       run: |
-        dotnet publish -c ${{ matrix.configuration }} -r win-${{ matrix.platform }} --self-contained true -p:WindowsPackageType=MSIX -p:Platform=${{ matrix.platform }} -p:GenerateAppInstallerFile=false
+        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never
 
     - name: List generated files
       run: |
-        Get-ChildItem -Recurse -Include "*.msix", "*.appx", "*.appxbundle" | Select-Object FullName
-        Get-ChildItem -Path "." -Recurse -Directory -Name "*publish*", "*Package*"
+        Get-ChildItem -Recurse -Include "*.msix", "*.appx" | Select-Object FullName
+        Get-ChildItem -Path "." -Recurse -Directory -Name "*Package*"
 
     - name: Upload MSIX artifacts
       uses: actions/upload-artifact@v4
