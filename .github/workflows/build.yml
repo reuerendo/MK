@@ -38,12 +38,25 @@ jobs:
         dotnet workload install microsoft-windows-sdk-projecttemplates
         dotnet workload install maui-windows
 
+    - name: Create missing assets
+      run: |
+        New-Item -ItemType Directory -Force -Path "Assets"
+        # Create placeholder PNG files (1x1 transparent pixel)
+        $pngBytes = [System.Convert]::FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==")
+        [System.IO.File]::WriteAllBytes("Assets\SplashScreen.scale-200.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\LockScreenLogo.scale-200.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\Square150x150Logo.scale-200.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\Square44x44Logo.scale-200.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\Square44x44Logo.targetsize-24_altform-unplated.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\StoreLogo.png", $pngBytes)
+        [System.IO.File]::WriteAllBytes("Assets\Wide310x150Logo.scale-200.png", $pngBytes)
+
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build MSIX package
       run: |
-        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never /p:GenerateAppInstallerFile=false
+        msbuild MiniKeyboard.csproj /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:WindowsPackageType=MSIX /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never /p:AppxPackageSigningEnabled=false
 
     - name: Debug - List all generated files
       run: |
