@@ -11,18 +11,18 @@
     
     <!-- MSIX packaging configuration -->
     <WindowsPackageType>MSIX</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
+    
+    <!-- Package settings -->
     <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>true</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>false</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>false</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    
-    <!-- Self-contained deployment -->
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,7 +44,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   
-  <!-- Manifest for MSIX -->
+  <!-- Correct manifest reference -->
   <ItemGroup>
     <None Include="Package.appxmanifest">
       <SubType>Designer</SubType>
