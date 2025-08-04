@@ -22,7 +22,12 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '8.0.x'
+
+    - name: Install .NET workloads
+      run: |
+        dotnet workload install microsoft-windows-sdk-projecttemplates
+        dotnet workload install maui-windows
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.3
@@ -32,7 +37,7 @@ jobs:
 
     - name: Build MSIX package
       run: |
-        dotnet publish -c ${{ matrix.configuration }} -r win-${{ matrix.platform }} --self-contained true -p:WindowsPackageType=MSIX -p:Platform=${{ matrix.platform }}
+        dotnet publish -c ${{ matrix.configuration }} -r win-${{ matrix.platform }} --self-contained true -p:WindowsPackageType=MSIX -p:Platform=${{ matrix.platform }} -p:GenerateAppInstallerFile=false
 
     - name: List generated files
       run: |
@@ -44,7 +49,7 @@ jobs:
       with:
         name: MiniKeyboard-${{ matrix.platform }}-MSIX
         path: |
-          bin/${{ matrix.configuration }}/net6.0-windows10.0.19041.0/win-${{ matrix.platform }}/AppPackages/**/*
+          bin/${{ matrix.configuration }}/net8.0-windows10.0.19041.0/win-${{ matrix.platform }}/AppPackages/**/*
           publish/**/*
 
   release:
