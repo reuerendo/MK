@@ -7,15 +7,13 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="MiniKeyboard"
-    Publisher="CN=Developer"
+    Name="MiniKeyboard.App"
+    Publisher="CN=MiniKeyboard Developer"
     Version="1.0.0.0" />
-
-  <mp:PhoneIdentity PhoneProductId="12345678-1234-1234-1234-123456789abc" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Mini Keyboard</DisplayName>
-    <PublisherDisplayName>Developer</PublisherDisplayName>
+    <PublisherDisplayName>MiniKeyboard Developer</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,8 +28,8 @@
 
   <Applications>
     <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="$targetentrypoint$">
+      Executable="MiniKeyboard.exe"
+      EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
         DisplayName="Mini Keyboard"
         Description="Customizable mini keyboard overlay"
@@ -46,6 +44,7 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <rescap:Capability Name="runFullTrust" />
     <rescap:Capability Name="inputInjectionBrokered" />
   </Capabilities>
 </Package>
